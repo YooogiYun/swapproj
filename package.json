@@ -1,0 +1,20 @@
+{
+  "name": "swapproj",
+  "version": "1.0.0",
+  "description": "swap project to do a tx by p2p",
+  "main": "./scripts/deploy.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "unic",
+  "license": "MIT",
+  "devDependencies": {
+    "hardhat": "^2.22.2",
+    "hardhat-deploy": "^0.12.2"
+  },
+  "dependencies": {
+    "@nomicfoundation/hardhat-toolbox": "^5.0.0",
+    "@openzeppelin/contracts": "^5.0.2",
+    "ethers": "^6.11.1"
+  }
+}
