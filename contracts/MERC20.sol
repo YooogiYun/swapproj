@@ -6,7 +6,7 @@ import "@openzeppelin/contracts/token/ERC20/ERC20.sol";
 
 contract MERC20 is ERC20 {
     constructor(string memory _name, string memory _symbol) ERC20(_name, _symbol) {
-        mintself(100 * 10**uint(decimals()));
+        mintself(1000_000_000);
     }
 
     function name() public view override returns (string memory) {

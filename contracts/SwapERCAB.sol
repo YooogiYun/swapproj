@@ -51,7 +51,7 @@ contract SwapERCAB is Ownable {
         require(amountOut > 0 && amountOut <= reserveOut , "Insufficient output amount");
     }
 
-    function swap(uint amountIn,bool isA2B) public returns (uint amountOut) {
+    function swap(uint amountIn,bool isA2B) private returns (uint amountOut) {
         require(m_isActive, "Swap is not active");
 
         IERC20 tokenIn = isA2B? m_tokenA: m_tokenB;
@@ -84,17 +84,17 @@ contract SwapERCAB is Ownable {
     }
 
 
-    function addTokens(uint amountInBaseA) external onlyOwner {
+    function addTokens(uint amountInBaseA) private onlyOwner {
         require(!m_isActive, "Swap is active");
 
         (bool success,uint amountInB) = Math.tryMul(amountInBaseA, m_ratioA2B);
         require(success, "Calculation failed");
 
         require(m_tokenA.balanceOf(msg.sender) >= amountInBaseA, "Insufficient balance of A Token");
-        require(m_tokenA.allowance(msg.sender,address(this)) >= amountInBaseA, "Insufficient balance of A Token");
+        require(m_tokenA.allowance(msg.sender, address(this)) >= amountInBaseA, "Insufficient allowance of A Token");
 
         require(m_tokenB.balanceOf(msg.sender) >= amountInB, "Insufficient balance of B Token");
-        require(m_tokenB.allowance(msg.sender,address(this)) >= amountInB, "Insufficient bbalance of B Token");
+        require(m_tokenB.allowance(msg.sender,address(this)) >= amountInB, "Insufficient allowance of B Token");
 
         m_tokenA.transferFrom(msg.sender, address(this), amountInBaseA);
         m_tokenB.transferFrom(msg.sender, address(this), amountInB);
@@ -106,6 +106,12 @@ contract SwapERCAB is Ownable {
     }
 
     function activateSwap() public onlyOwner {
+        m_isActive = true;
+    }
+
+    function activeSwap(uint amountInBaseA) external onlyOwner {
+        m_isActive = false;
+        addTokens(amountInBaseA);
         m_isActive = true;
     }
 
